@@ -1,9 +1,35 @@
-import React from 'react';
+"use client";
+import React, { useState, useEffect } from 'react';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
+import { getPokemonList } from '../api';
 
 const Pokedex = () => {
+    const [pokemons, setPokemons] = useState([]);
+    const [page, setPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+
+    async function loadPokemons() {
+        try {
+            setIsLoading(true);
+            const data = await getPokemonList(page);
+            setPokemons(data.pokemons);
+        } catch (error) {
+            console.error("Erreur:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        loadPokemons();
+    }, [page]);
+
+    if (isLoading) return <div>Chargement...</div>;
+
+    console.log(pokemons);
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
@@ -14,7 +40,6 @@ const Pokedex = () => {
                 </div>
             </div>
 
-            {/* Filtres */}
             <div className="bg-white p-4 rounded-lg shadow">
                 <div className="flex flex-wrap gap-2">
                     {['Normal', 'Feu', 'Eau', 'Plante', 'Électrik'].map((type) => (
@@ -30,19 +55,25 @@ const Pokedex = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {Array.from({ length: 20 }).map((_, i) => (
+                {pokemons.map((pokemon, i) => (
                     <Card key={i} className="hover:shadow-lg transition-shadow cursor-pointer">
                         <CardContent className="p-4">
                             <img
-                                src={`/api/placeholder/150/150`}
+                                src={pokemon.image}
                                 alt="Pokemon"
                                 className="w-full h-auto mb-2"
                             />
                             <div className="text-center">
-                                <p className="font-medium">Pokémon #{i + 1}</p>
+                                <p className="font-medium">{pokemon.nom}</p>
                                 <div className="flex justify-center gap-2 mt-2">
-                                    <span className="px-2 py-1 bg-red-100 rounded-full text-xs">Type 1</span>
-                                    <span className="px-2 py-1 bg-blue-100 rounded-full text-xs">Type 2</span>
+                                    {pokemon.types.map((type, i) => (
+                                        <span
+                                            key={i}
+                                            className="px-2 py-1 bg-blue-100 rounded-full text-xs"
+                                        >
+                                            {type}
+                                        </span>
+                                    ))}
                                 </div>
                             </div>
                         </CardContent>
@@ -51,11 +82,12 @@ const Pokedex = () => {
             </div>
 
             <div className="flex justify-center gap-2 mt-8">
-                <Button variant="outline">Précédent</Button>
-                <Button variant="outline">1</Button>
-                <Button variant="outline">2</Button>
-                <Button variant="outline">3</Button>
-                <Button variant="outline">Suivant</Button>
+                <Button onClick={() => setPage(p => p - 1)} disabled={page === 1}>
+                    Page précédente
+                </Button>
+                <Button onClick={() => setPage(p => p + 1)}>
+                    Page suivante
+                </Button>
             </div>
         </div>
     );

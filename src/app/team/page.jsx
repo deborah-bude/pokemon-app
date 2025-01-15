@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/button';
-import { Plus } from 'lucide-react';
+import { PlusIcon } from 'lucide-react';
 
 const TeamBuilder = () => {
     return (
@@ -11,7 +11,6 @@ const TeamBuilder = () => {
                 <Button>Sauvegarder l'équipe</Button>
             </div>
 
-            {/* Zone de construction d'équipe */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 {Array.from({ length: 6 }).map((_, i) => (
                     <Card key={i} className="aspect-square">
@@ -27,7 +26,7 @@ const TeamBuilder = () => {
                                 </>
                             ) : (
                                 <Button variant="outline" className="w-12 h-12 rounded-full">
-                                    <Plus className="w-6 h-6" />
+                                    <PlusIcon className="w-6 h-6" />
                                 </Button>
                             )}
                         </CardContent>
