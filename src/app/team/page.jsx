@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
-import { Button } from '../components/ui/button';
+import { Button } from '../components/ui/Button';
 import { PlusIcon } from 'lucide-react';
 
 const TeamBuilder = () => {
@@ -34,7 +34,6 @@ const TeamBuilder = () => {
                 ))}
             </div>
 
-            {/* Statistiques de l'équipe */}
             <Card>
                 <CardHeader>
                     <CardTitle>Statistiques de l'équipe</CardTitle>

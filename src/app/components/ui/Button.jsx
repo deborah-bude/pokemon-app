@@ -1,4 +1,4 @@
-export function Button({ children, variant = 'primary' }) {
+export function Button({ children, variant = 'primary', ...props }) {
     let className = 'inline-flex items-center justify-center px-4 py-2 rounded-full text-lg font-semibold';
 
     if (variant === 'primary') {
@@ -10,7 +10,7 @@ export function Button({ children, variant = 'primary' }) {
     }
 
     return (
-        <button className={className}>
+        <button className={className} {...props}>
             {children}
         </button>
     );
