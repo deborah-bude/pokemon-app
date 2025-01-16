@@ -1,18 +1,49 @@
-import React from 'react';
+"use client";
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/Card';
 import { Button } from './components/ui/Button';
+import { getPokemonById } from './api';
 
 const Home = () => {
+  const [randomPokemons, setRandomPokemons] = useState([]);
+
+  async function getRandomPokemons(count = 4) {
+    try {
+      const randomIds = Array.from({ length: count }, () => Math.floor(Math.random() * 1008) + 1);
+      const pokemonsWithDetails = await Promise.all(
+        randomIds.map(async (id) => await getPokemonById(id))
+      );
+      return pokemonsWithDetails;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des Pokémon aléatoires :', error);
+      throw error;
+    }
+  }
+
+  useEffect(() => {
+    async function fetchRandomPokemons() {
+      try {
+        const pokemons = await getRandomPokemons(8);
+        setRandomPokemons(pokemons);
+      } catch (error) {
+        console.error("Erreur lors du chargement des Pokémon :", error);
+      }
+    }
+
+    fetchRandomPokemons();
+  }, []);
+
+
   return (
     <div className="space-y-8">
       <section className="text-center py-12 bg-gradient-to-r from-red-500 to-red-600 rounded-lg text-white">
         <h1 className="text-4xl font-bold mb-4">Bienvenue sur PokéApp</h1>
         <p className="text-xl mb-8">Explorez l'univers des Pokémon</p>
         <div className="flex justify-center gap-4">
-          <Button variant="secondary">
+          <Button variant="secondary" href="/pokemon">
             Explorer le Pokédex
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" href="/team">
             Créer une équipe
           </Button>
         </div>
@@ -48,17 +79,17 @@ const Home = () => {
       </div>
 
       <section>
-        <h2 className="text-2xl font-bold mb-4">Pokémon Populaires</h2>
+        <h2 className="text-2xl font-bold mb-4">Pokémon Aléatoires</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((i) => (
+          {randomPokemons.map((pokemon, i) => (
             <Card key={i} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-4 text-center">
                 <img
-                  src={`/api/placeholder/120/120`}
+                  src={pokemon.image}
                   alt="Pokemon"
                   className="mx-auto mb-2"
                 />
-                <p className="font-medium">Pokémon #{i}</p>
+                <p className="font-medium">{pokemon.nom}</p>
               </CardContent>
             </Card>
           ))}
