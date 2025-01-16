@@ -1,6 +1,6 @@
 export function Card({ children }) {
     return (
-        <div className="bg-card text-card-foreground rounded-xl border shadow">
+        <div className="bg-card text-card-foreground rounded-xl border shadow relative">
             {children}
         </div>
     );

@@ -5,13 +5,11 @@ import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { getMovesList } from '../api';
 
-const Moves = () => {
+export default function Moves() {
     const [moves, setMoves] = useState([]);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
 
-
-    console.log(page);
     async function loadMoves() {
         try {
             setIsLoading(true);
@@ -83,5 +81,3 @@ const Moves = () => {
         </div>
     );
 };
-
-export default Moves;

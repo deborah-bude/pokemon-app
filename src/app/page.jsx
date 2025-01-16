@@ -2,18 +2,31 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/Card';
 import { Button } from './components/ui/Button';
-import { getRandomPokemons } from './api';
+import { getPokemonById } from './api';
 
 const Home = () => {
   const [randomPokemons, setRandomPokemons] = useState([]);
 
+  async function getRandomPokemons(count = 4) {
+    try {
+      const randomIds = Array.from({ length: count }, () => Math.floor(Math.random() * 1008) + 1);
+      const pokemonsWithDetails = await Promise.all(
+        randomIds.map(async (id) => await getPokemonById(id))
+      );
+      return pokemonsWithDetails;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des Pokémon aléatoires :', error);
+      throw error;
+    }
+  }
+
   useEffect(() => {
     async function fetchRandomPokemons() {
       try {
-        const data = await getRandomPokemons(8);
-        setRandomPokemons(data);
+        const pokemons = await getRandomPokemons(8);
+        setRandomPokemons(pokemons);
       } catch (error) {
-        console.error("Erreur lors du chargement des Pokémon aléatoires:", error);
+        console.error("Erreur lors du chargement des Pokémon :", error);
       }
     }
 
@@ -30,7 +43,7 @@ const Home = () => {
           <Button variant="secondary" href="/pokemon">
             Explorer le Pokédex
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" href="/team">
             Créer une équipe
           </Button>
         </div>

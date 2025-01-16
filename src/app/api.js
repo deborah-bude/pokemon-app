@@ -55,8 +55,6 @@ export async function getPokemonList(page = 1) {
 export async function getMovesList(page = 1) {
   const limit = 20;
   const offset = (page - 1) * limit;
-  console.log(`page: ${page}`);
-  console.log(`offset: ${offset}, limit: ${limit}`);
 
   const response = await fetch(`${BASE_URL}/move?offset=${offset}&limit=${limit}`);
   const data = await response.json();
@@ -85,30 +83,24 @@ export async function getMovesList(page = 1) {
   };
 }
 
-export async function getRandomPokemons(count = 4) {
-  const response = await fetch(`${BASE_URL}/pokemon?limit=1000`); 
-  const data = await response.json();
+export async function getPokemonById(id) {
+  try {
+    const response = await fetch(`${BASE_URL}/pokemon/${id}`);
+    const details = await response.json();
 
-  const shuffled = data.results.sort(() => 0.5 - Math.random());
-  const selectedPokemons = shuffled.slice(0, count);
+    const speciesResponse = await fetch(details.species.url);
+    const species = await speciesResponse.json();
+    const frenchName = species.names.find(name => name.language.name === 'fr')?.name;
 
-  const pokemonsWithDetails = await Promise.all(
-    selectedPokemons.map(async (pokemon) => {
-      const detailsResponse = await fetch(pokemon.url);
-      const details = await detailsResponse.json();
-
-      const speciesResponse = await fetch(details.species.url);
-      const species = await speciesResponse.json();
-      const frenchName = species.names.find(name => name.language.name === 'fr')?.name;
-
-      return {
-        id: details.id,
-        nom: frenchName || details.name,
-        image: details.sprites.front_default,
-        types: details.types.map(type => typeTranslations[type.type.name] || type.type.name),
-      };
-    })
-  );
-
-  return pokemonsWithDetails;
+    return {
+      id: details.id,
+      nom: frenchName || details.name,
+      image: details.sprites.front_default,
+      types: details.types.map(type => typeTranslations[type.type.name] || type.type.name),
+    };
+  } catch (error) {
+    console.error(`Erreur lors de la récupération du Pokémon ${id} :`, error);
+    throw error;
+  }
 }
+
