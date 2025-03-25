@@ -1,103 +1,63 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import Image from 'next/image';
+import RandomPokemon from './features/pages/home/components/RandomPokemon';
+import { Card, CardContent, CardHeader, CardTitle } from './features/ui/components/Card';
+
+const Home = () => {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="container mx-auto my-8 px-4 min-h-screen overflow-x-hidden">
+      {/* ZONE PRINCIPALE */}
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* BLOC IMAGE OU CONTENU PRINCIPAL */}
+        <div className="lg:col-span-2 rounded-3xl bg-white/60 border border-white/30 backdrop-blur-xl p-4 shadow-xl relative group hover:scale-[1.01] transition-transform duration-300">
+          <Image
+            src="/sample-pokemon.jpg" // mets une vraie image ici
+            alt="Featured Pokemon"
+            width={800}
+            height={400}
+            className="w-full h-auto rounded-2xl object-cover"
+          />
+          <div className="absolute bottom-4 left-4 text-white bg-black/40 px-4 py-2 rounded-xl font-bold text-lg">
+            Attrapez-les tous !
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        {/* STATS OU WIDGETS */}
+        <aside className="flex flex-col gap-4">
+          <RandomPokemon />
+
+          <Card className="bg-white/60 backdrop-blur-lg border border-white/20 shadow-md hover:shadow-lg transition-all">
+            <CardHeader>
+              <CardTitle>Simulateur d&apos;équipe</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm">Essayez vos Team pokemons ! Force, faiblesse, puissance, etc. vous pourrez voir les statistiques générales de votre team avant de la jouer.</p>
+            </CardContent>
+          </Card>
+        </aside>
+      </section>
+
+      {/* SECTION POKÉMON FAVORIS */}
+      <section className="mt-12">
+        <h2 className="text-2xl font-bold mb-4">✨ Pokémon Favoris</h2>
+        <div className="flex gap-4 overflow-x-auto scrollbar-hide">
+          {[1, 2, 3,4,5].map((i) => (
+            <div key={i} className="min-w-[200px] bg-white/60 backdrop-blur-lg border border-white/30 rounded-2xl p-4 shadow-lg hover:scale-105 transition-transform">
+              <Image
+                src={`/pokemon/favorite-${i}.png`}
+                alt={`Favori ${i}`}
+                width={150}
+                height={150}
+                className="mx-auto drop-shadow"
+              />
+              <p className="text-center mt-2 font-semibold">Pokémon #{i}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
   );
-}
+};
+
+export default Home;
