@@ -1,7 +1,7 @@
 "use client";
+import ListPokemon from "@/app/features/pages/pokedex/components/ListPokemons";
 import { Button } from "@/app/features/ui/components/Button";
 import { Input } from "@/app/features/ui/components/Input";
-import ListPokemon from "@/app/features/ui/components/ListPokemons";
 import { typeTranslations } from "@/app/features/ui/constant/typestranslation";
 
 export default function Pokedex() {

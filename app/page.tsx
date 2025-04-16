@@ -12,11 +12,12 @@ const Home = () => {
         {/* BLOC IMAGE OU CONTENU PRINCIPAL */}
         <div className="lg:col-span-2 rounded-3xl bg-white/60 border border-white/30 backdrop-blur-xl p-4 shadow-xl relative group hover:scale-[1.01] transition-transform duration-300">
           <Image
-            src="/sample-pokemon.jpg" // mets une vraie image ici
+            src="/pokemon-presentation.png"
             alt="Featured Pokemon"
             width={800}
             height={400}
-            className="w-full h-auto rounded-2xl object-cover"
+            className="w-full h-full rounded-2xl object-cover"
+            priority
           />
           <div className="absolute bottom-4 left-4 text-white bg-black/40 px-4 py-2 rounded-xl font-bold text-lg">
             Attrapez-les tous !
@@ -42,10 +43,10 @@ const Home = () => {
       <section className="mt-12">
         <h2 className="text-2xl font-bold mb-4">✨ Pokémon Favoris</h2>
         <div className="flex gap-4 overflow-x-auto scrollbar-hide">
-          {[1, 2, 3,4,5].map((i) => (
+          {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="min-w-[200px] bg-white/60 backdrop-blur-lg border border-white/30 rounded-2xl p-4 shadow-lg hover:scale-105 transition-transform">
               <Image
-                src={`/pokemon/favorite-${i}.png`}
+                src={`/pokemon-favorite.png`}
                 alt={`Favori ${i}`}
                 width={150}
                 height={150}
